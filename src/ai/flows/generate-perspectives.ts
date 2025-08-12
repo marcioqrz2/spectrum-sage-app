@@ -17,13 +17,13 @@ const GeneratePerspectivesInputSchema = z.object({
 export type GeneratePerspectivesInput = z.infer<typeof GeneratePerspectivesInputSchema>;
 
 const GeneratePerspectivesOutputSchema = z.object({
-  leftPerspective: z.string().describe('How a left-leaning publication would cover the topic.'),
-  centerPerspective: z.string().describe('How a center publication would cover the topic.'),
-  rightPerspective: z.string().describe('How a right-leaning publication would cover the topic.'),
-  overallBias: z.enum(['Left', 'Center-Left', 'Center', 'Center-Right', 'Right']).describe('The overall bias of the article.'),
-  confidenceBias: z.number().min(0).max(100).describe('A number from 0 to 100 representing the confidence in the bias classification'),
-  factuality: z.enum(['Very High', 'High', 'Mixed', 'Low', 'Very Low']).describe('The factuality level of the article'),
-  articleSummary: z.string().describe('A short and strictly neutral summary of the main points of the article')
+  leftPerspective: z.string().describe('Como uma publicação de esquerda cobriria o tópico.'),
+  centerPerspective: z.string().describe('Como uma publicação de centro cobriria o tópico.'),
+  rightPerspective: z.string().describe('Como uma publicação de direita cobriria o tópico.'),
+  overallBias: z.enum(['Esquerda', 'Centro-Esquerda', 'Centro', 'Centro-Direita', 'Direita']).describe('O viés geral do artigo.'),
+  confidenceBias: z.number().min(0).max(100).describe('Um número de 0 a 100 representando a confiança na classificação do viés'),
+  factuality: z.enum(['Muito Alta', 'Alta', 'Mista', 'Baixa', 'Muito Baixa']).describe('O nível de factualidade do artigo'),
+  articleSummary: z.string().describe('Um resumo curto e estritamente neutro dos pontos principais do artigo')
 });
 export type GeneratePerspectivesOutput = z.infer<typeof GeneratePerspectivesOutputSchema>;
 
@@ -35,23 +35,23 @@ const generatePerspectivesPrompt = ai.definePrompt({
   name: 'generatePerspectivesPrompt',
   input: {schema: GeneratePerspectivesInputSchema},
   output: {schema: GeneratePerspectivesOutputSchema},
-  prompt: `You are an advanced news analyst, inspired by Ground News. Your task is to analyze the provided text and decompose its presentation in a neutral and multifaceted way.
+  prompt: `Você é um analista de notícias avançado, inspirado no Ground News. Sua tarefa é analisar o texto fornecido e decompor sua apresentação de forma neutra e multifacetada.
 
-Analyze the following text:
+Analise o seguinte texto:
 ---
 {{{articleContent}}}
 ---
 
-Based on the text, provide a response strictly in the following JSON format. Do not include markdown or any text outside the JSON object:
+Com base no texto, forneça uma resposta estritamente no seguinte formato JSON. Não inclua markdown ou qualquer texto fora do objeto JSON:
 
 {
-  "overallBias": "<Classify the overall bias of the article as 'Left', 'Center-Left', 'Center', 'Center-Right', or 'Right'>",
-  "confidenceBias": <A number from 0 to 100 representing the confidence in the bias classification>,
-  "factuality": "<Evaluate the level of factuality as 'Very High', 'High', 'Mixed', 'Low', or 'Very Low'>",
-  "articleSummary": "<Write a short and strictly neutral summary of the main points of the article.>",
-  "leftPerspective": "<Describe how a left-leaning publication would typically cover this topic, highlighting the angles and language they would use.>",
-  "centerPerspective": "<Describe how a center publication would typically cover this topic, focusing on a balanced presentation.>",
-  "rightPerspective": "<Describe how a right-leaning publication would typically cover this topic, highlighting their preferred angles and framing.>"
+  "overallBias": "<Classifique o viés geral do artigo como 'Esquerda', 'Centro-Esquerda', 'Centro', 'Centro-Direita' ou 'Direita'>",
+  "confidenceBias": <Um número de 0 a 100 representando a confiança na classificação de viés>,
+  "factuality": "<Avalie o nível de factualidade como 'Muito Alta', 'Alta', 'Mista', 'Baixa' ou 'Muito Baixa'>",
+  "articleSummary": "<Escreva um resumo curto e estritamente neutro dos pontos principais do artigo.>",
+  "leftPerspective": "<Descreva como uma publicação de esquerda normalmente cobriria este tópico, destacando os ângulos e a linguagem que usariam.>",
+  "centerPerspective": "<Descreva como uma publicação de centro normalmente cobriria este tópico, focando em uma apresentação equilibrada.>",
+  "rightPerspective": "<Descreva como uma publicação de direita normalmente cobriria este tópico, destacando seus ângulos e enquadramentos preferidos.>"
 }
 `,
 });

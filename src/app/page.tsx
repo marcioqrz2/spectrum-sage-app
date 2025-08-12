@@ -32,15 +32,10 @@ const Loader: FC = () => (
 
 const biasColorMap: { [key: string]: string } = {
   'Esquerda': 'text-blue-400',
-  'Left': 'text-blue-400',
   'Centro-Esquerda': 'text-blue-300',
-  'Center-Left': 'text-blue-300',
   'Centro': 'text-gray-300',
-  'Center': 'text-gray-300',
   'Centro-Direita': 'text-red-300',
-  'Center-Right': 'text-red-300',
   'Direita': 'text-red-400',
-  'Right': 'text-red-400',
 };
 
 const ResultsDisplay: FC<{ results: GeneratePerspectivesOutput }> = ({ results }) => (
