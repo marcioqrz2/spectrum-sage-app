@@ -51,13 +51,25 @@ const extractArticleTextFromUrlFlow = ai.defineFlow(
           return await response.text();
         },
       },
+      {
+        // Proxy 3: cors-anywhere.herokuapp.com
+        url: `https://cors-anywhere.herokuapp.com/${url}`,
+        parser: async (response: Response) => {
+          return await response.text();
+        },
+      },
     ];
 
     let articleTextContent: string | null = null;
     for (const proxy of proxyConfigs) {
       try {
         console.log(`Attempting proxy: ${proxy.url}`);
-        const response = await fetch(proxy.url);
+        const response = await fetch(proxy.url, {
+          headers: {
+            // This header is required by cors-anywhere
+            'X-Requested-With': 'XMLHttpRequest',
+          }
+        });
 
         if (!response.ok) {
           throw new Error(`Status: ${response.status}`);
@@ -86,7 +98,7 @@ const extractArticleTextFromUrlFlow = ai.defineFlow(
     }
 
     if (!articleTextContent) {
-      throw new Error('Failed to process the link. All proxy services failed.');
+      throw new Error('Não foi possível processar o link. Todos os serviços de proxy falharam.');
     }
 
     return {textContent: articleTextContent};
